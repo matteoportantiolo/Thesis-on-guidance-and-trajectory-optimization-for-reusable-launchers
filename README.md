@@ -8,78 +8,78 @@ This thesis was conducted in collaboration with **Indra**, and the implementatio
 ---
 
 ## Overview
-This thesis focuses on the development and analysis of **real-time guidance algorithms for reusable rocket landing**, based on convex optimization techniques.
+This thesis focuses on the development of **real-time guidance algorithms for reusable rocket landing**, based on convex optimization techniques.
 
-The work investigates the use of **Quadratic Programming (QP)** solvers for embedded trajectory optimization, with particular attention to computational efficiency, robustness, and real-time feasibility.
+The main contribution is the investigation of **Sequential Convex Programming (SCvx) using Quadratic Programming (QP) subproblems**, with the goal of improving computational efficiency for embedded applications.
 
-Two main approaches are studied:
-- **Sequential Convex Programming (SCvx)**
-- **Sequential Quadratic Programming (SQP)**
+The proposed approach is compared against the **baseline SCvx implementation using Second-Order Cone Programming (SOCP)** currently adopted in the company.
 
 ---
 
 ## Mission Context
-The problem addressed is the **powered descent and landing of a reusable launch vehicle**, requiring:
+The problem addressed is the **powered descent and landing of a reusable launch vehicle**, which requires:
 
 - Real-time trajectory generation
 - Constraint satisfaction (thrust limits, state constraints)
-- Robustness to model uncertainties
+- Robustness to uncertainties
 - Fast onboard computation
 
-Typical applications include:
-- Vertical landing of reusable boosters
-- Planetary landing scenarios with limited computational resources
+These requirements make **computational efficiency** a key driver in guidance algorithm design.
 
 ---
 
 ## System Architecture
 
 ### Guidance Framework
-The guidance problem is formulated as a **trajectory optimization problem**:
+The landing problem is formulated as a **nonlinear optimal control problem**:
 
-- Nonlinear dynamics
+- Nonlinear spacecraft dynamics
 - State and control constraints
 - Minimum-fuel or minimum-effort objective
 
-The problem is iteratively solved onboard using convex optimization techniques.
+The problem is solved onboard through **iterative convexification**.
 
 ### Convexification Strategy
-- Nonlinear dynamics are linearized around a reference trajectory
-- Non-convex constraints are approximated through convex relaxations
-- Trust-region or penalty mechanisms ensure convergence
+- Linearization of dynamics around a reference trajectory
+- Convex approximation of non-convex constraints
+- Trust-region and penalty techniques to ensure convergence
+
+Each iteration results in a convex subproblem to be solved efficiently.
 
 ---
 
 ## Methods
 
-### Sequential Convex Programming (SCvx)
-- Iterative convexification of the nonlinear optimal control problem
-- Solves a sequence of convex subproblems
-- Guarantees feasibility through virtual controls and trust regions
+### SCvx with QP Subproblems (Proposed Approach)
+- Reformulation of SCvx subproblems as **Quadratic Programs (QP)**
+- Exploitation of problem structure for computational efficiency
+- Compatibility with fast embedded QP solvers
 
-### Sequential Quadratic Programming (SQP)
-- Solves a sequence of quadratic approximations of the nonlinear problem
-- Incorporates second-order information
-- Compared against SCvx in terms of convergence and robustness
+This approach targets:
+- Reduced solve time
+- Improved scalability for onboard applications
 
-### QP Solver Analysis
-A key contribution of the thesis is the investigation of **off-the-shelf QP solvers** for embedded applications:
+### SCvx with SOCP (Baseline – Company Implementation)
+- Convex subproblems formulated as **Second-Order Cone Programs (SOCP)**
+- Higher modeling flexibility for certain constraints
+- Increased computational cost compared to QP-based formulations
 
-- Performance benchmarking (speed, convergence)
-- Numerical robustness
-- Suitability for real-time onboard implementation
+### Comparative Analysis
+A detailed comparison is performed between:
 
-### Custom Solver Strategies
-- Problem structure exploitation
-- Reduction of computational load
-- Trade-offs between optimality and execution time
+- **QP-based SCvx (this work)**
+- **SOCP-based SCvx (baseline)**
 
-### Sensitivity Analysis
-The robustness of the guidance solution is evaluated with respect to:
+Key evaluation metrics include:
+- Solver execution time
+- Convergence behavior
+- Feasibility and constraint satisfaction
+- Sensitivity to initialization and discretization
 
-- Model uncertainties
-- Discretization choices
-- Initialization conditions
+### Solver Considerations
+- Use of off-the-shelf QP solvers for embedded applications
+- Trade-offs between accuracy and computational load
+- Impact of problem scaling and conditioning
 
 ---
 
@@ -87,17 +87,14 @@ The robustness of the guidance solution is evaluated with respect to:
 
 Main outcomes include:
 
-- Demonstration of **real-time feasibility** of convex guidance methods
+- Demonstration that **QP-based SCvx significantly reduces computational cost**
+- Comparable solution quality with respect to SOCP-based approach
+- Improved suitability for **real-time onboard implementation**
 - Identification of trade-offs between:
-  - SCvx (robustness, feasibility)
-  - SQP (potentially faster convergence but less robust)
-- Evaluation of QP solver performance for embedded applications
-- Validation of guidance strategies under model uncertainties
+  - Modeling flexibility (SOCP)
+  - Computational efficiency (QP)
 
-The results highlight the importance of:
-- Solver selection
-- Problem scaling
-- Initialization strategies
+The analysis highlights that **QP reformulation is a strong candidate for embedded guidance systems**.
 
 ---
 
@@ -107,22 +104,21 @@ The (non-public) implementation includes:
 
 - MATLAB prototypes for algorithm development
 - C-based implementation for embedded execution
-- QP solver integration
+- Integration of QP solvers
 - Build system using CMake / Makefile
-- Numerical simulation and validation framework
+- Simulation framework for trajectory validation
 
 ---
 
 ## Key Concepts
 
-- Convex optimization
 - Sequential Convex Programming (SCvx)
-- Sequential Quadratic Programming (SQP)
 - Quadratic Programming (QP)
-- Real-time guidance
-- Rocket landing
+- Second-Order Cone Programming (SOCP)
+- Real-time trajectory optimization
+- Rocket landing guidance
 - Embedded optimization
-- Trajectory optimization under constraints
+- Convexification of nonlinear dynamics
 
 ---
 
