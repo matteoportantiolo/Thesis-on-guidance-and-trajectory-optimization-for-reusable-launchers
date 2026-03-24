@@ -1,4 +1,4 @@
-# Guidance and Trajectory Optimization for Reusable Launchers
+# Real-time Convex Guidance for Rocket Landing
 
 ## ⚠️ Code Availability
 The `src` folder (MATLAB, C, CMake, Makefile) is **not included** in this repository due to company policy restrictions.
